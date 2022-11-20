@@ -1,0 +1,153 @@
+<ion-header>
+	<ion-toolbar class="toolbar">
+	  <ion-button class = "backButton" slot="start" style = "color: #fff" (click) = "goBack()"><fa-icon [icon]="faArrowLeft" style="color: #fff"></fa-icon></ion-button>
+	  <ion-title style = "text-align: center;color: #fff;">{{ selectedSuggestion['name'] }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="bussinessProfileContent">
+  <div *ngIf="selectedSuggestion['ID'] == -3 || selectedSuggestion['ID'] == -4">
+	  <div class="gridContainer">
+		  <div class="headerContainer"  >
+			  <div [ngStyle]= "{'width': phoneWidth + 'px', height: '23vh', overflow: 'hidden'}" class="coverPhotoBusinessProfileContainer" >
+				  <ion-slides class = "slider" [options]="slideOptsTwo" #slideWithNav2 (ionSlideDidChange)="SlideDidChange($event)">
+					  <ion-slide class = "slide" *ngFor="let item of selectedSuggestion['images']">
+						  <div class = "imageContainerBusinessProfileCoverPhotos" [ngStyle]= "{'width': phoneWidth + 'px', height: '220px'}" >
+							  <img [defaultImage]="defaultImage" [lazyLoad]="item.path" [ngStyle]= "{'max-width': phoneWidth + 'px','object-fit': 'unset'}" (click) = "presentModal(2)"/>
+							  <button type="submit" ion-button color="light" class="swiper-button-prev swiper-button-prev-businessProfileCoverImages swiper-button-black" (click)="prevSlide(1)"><ion-icon class = "arrowIcon" name="arrow-back"></ion-icon></button>
+							  <button type="submit" ion-button color="light" class="swiper-button-next swiper-button-next-businessProfileCoverImages swiper-button-black" (click)="nextSlide(1)"><ion-icon class = "arrowIcon" name="arrow-forward"></ion-icon></button>
+						  </div>
+					  </ion-slide>
+				  </ion-slides>
+			  </div>
+			  <ion-grid>
+				  <div>
+					  <img [defaultImage]="defaultImage" [lazyLoad]="selectedSuggestion['ID'] == -3 ? '../../assets/images/13.png' : '../../assets/images/event.png'"/>
+				  </div>
+			  </ion-grid>
+		  </div>
+	  </div>
+  </div>
+  <div *ngIf="selectedSuggestion['ID'] != -3 && selectedSuggestion['ID'] != -4">
+	  <div class="gridContainer">
+		  <div class="headerContainer">
+			  <div [ngStyle]= "{'width': phoneWidth + 'px', height: '23vh', overflow: 'hidden'}" class="coverPhotoBusinessProfileContainer" >
+				  <ion-slides class = "slider" [options]="slideOptsTwo" #slideWithNav2 (ionSlideDidChange)="SlideDidChange($event)">
+					  <ion-slide class = "slide" *ngFor="let item of selectedSuggestion['images']">
+						  <div class = "imageContainerBusinessProfileCoverPhotos" [ngStyle]= "{'width': phoneWidth + 'px', height: '220px'}" >
+							  <img [defaultImage]="defaultImage" [lazyLoad]="item.path" [ngStyle]= "{'max-width': phoneWidth + 'px','object-fit': 'unset'}" (click) = "presentModal(2)"/>
+							  <button type="submit" ion-button color="light" class="swiper-button-prev swiper-button-prev-businessProfileCoverImages swiper-button-black" (click)="prevSlide(1)"><ion-icon class = "arrowIcon" name="arrow-back"></ion-icon></button>
+							  <button type="submit" ion-button color="light" class="swiper-button-next swiper-button-next-businessProfileCoverImages swiper-button-black" (click)="nextSlide(1)"><ion-icon class = "arrowIcon" name="arrow-forward"></ion-icon></button>
+						  </div>
+					  </ion-slide>
+				  </ion-slides>
+			  </div>
+		  </div>
+		  <ion-grid>
+			  <ion-row class = "roadTripDescription">
+				  <div [ngStyle]= "{'width': phoneWidth + 'px'}" class="cardContainer">
+					  <ion-card-header class = "roadTripDescriptionCard">
+						  <ion-card-title class = "titleLabel" ><h2 class = "roadtripDetails">Social Media</h2></ion-card-title>
+						  <ion-card-subtitle *ngFor="let item of selectedSuggestion['urls']">
+							  <ion-label style="margin-left:10px;color: black;font-weight: bold;">
+								  <ion-img *ngIf="item.tagID == 2" class="facebookIcon" src = "../assets/images/Facebook-logo.png"></ion-img>
+								  <ion-img *ngIf="item.tagID == 3" class="instagramIcon" src = "../assets/images/instagram-logo.png"></ion-img> 
+								  <fa-icon [icon]="faGlobe" *ngIf="item.tagID == 1" style="font-size: 20px;margin-right: 6px;"></fa-icon>{{item.name}}: 
+							  </ion-label>
+							  <div class="socialMediaLinks">
+								  <a href= '{{item.url}}'>{{ item.url }}</a>
+							  </div>
+						  </ion-card-subtitle>
+					  </ion-card-header>
+				  </div>
+			  </ion-row>
+			  <ion-row class = "roadTripDescription">
+				  <div [ngStyle]= "{'width': phoneWidth + 'px'}" class="cardContainer">
+					  <ion-card-header class = "roadTripDescriptionCard">
+						  <ion-card-title class = "titleLabel" ><h2 class = "roadtripDetails">Γενικά Στοιχεία</h2></ion-card-title>
+						  <ion-card-subtitle style="margin-left:10px;">
+							  <fa-icon [icon]="faAddressCard" class="generalInformationIcons"></fa-icon> <ion-label class="addressLabel">Διευθύνση: 
+							  </ion-label>
+							  <div class="addressFieldValue">
+								  <ion-label>
+									  {{selectedSuggestion['address']}} {{selectedSuggestion['addressNo']}} {{selectedSuggestion['zipCode']}} {{selectedSuggestion['city']}}
+								  </ion-label>
+							  </div>
+						  </ion-card-subtitle>
+						  <div *ngIf="selectedSuggestion['isPhonesNumber'].length > 0" class="phonesWrapper">
+							  <ion-card-subtitle *ngFor="let item2 of selectedSuggestion['isPhonesNumber']; let i = index" style="margin-left:10px;">
+								  <fa-icon [icon]="faPhone" *ngIf ="i == 0" class="generalInformationIcons"></fa-icon>
+								  <ion-label *ngIf ="i == 0"><label class="phoneLabel">Τηλέφωνο: </label>
+									  <div class="phoneLabelWrapper">
+										  {{item2.phone}} <!--<button class="dialUpButton" (click)="dialUp(item2.phone)">Κλήση</button>-->
+									  </div>
+								  </ion-label>
+								  <fa-icon [icon]="faPhone" *ngIf="i > 0" class="generalInformationIcons"></fa-icon>
+								  <ion-label *ngIf ="i > 0" class="phoneLabel"> Τηλέφωνο {{i + 1}} 
+									  <div class="phoneLabelWrapper">
+										  {{item2.phone}} <!--<button class="dialUpButton" (click)="dialUp(item2.phone)">Κλήση</button>-->
+									  </div>
+								  </ion-label>
+							  </ion-card-subtitle>
+						  </div>
+						  <div *ngIf="selectedSuggestion['isMobileNumbers'].length > 0"  class="phonesWrapper">
+							  <ion-card-subtitle *ngFor="let item3 of selectedSuggestion['isMobileNumbers']; let i = index" style="margin-left:10px;">
+								  <fa-icon [icon]="faMobile" *ngIf ="i == 0" class="generalInformationIcons"></fa-icon>
+								  <ion-label *ngIf ="i == 0" class="celPhoneLabel">Κινητό
+									  <div class="phoneLabelWrapper">
+										  {{item3.phone}} 
+										  <!--<button class="dialUpButton" (click)="dialUp(item3.phone)" *ngIf="isAndroid">Κλήση</button>
+										  <button class="dialUpButton" (click)="sendSms(item3.phone)" *ngIf="isAndroid" style="margin-left:16px;">Μύνημα</button>-->
+									  </div>
+								  </ion-label>
+								  <fa-icon [icon]="faMobile" *ngIf ="i > 0" class="generalInformationIcons"></fa-icon><ion-label *ngIf ="i > 0" style="margin-left:16px;">Κινητό {{i + 1}}: {{item3.phone}} </ion-label>
+							  </ion-card-subtitle>
+						  </div>
+						  <ion-card-subtitle style="margin-left:10px;" *ngIf="selectedSuggestion['email'] !=''">
+							  <fa-icon [icon]="faEnvelope" class="generalInformationIcons"></fa-icon><ion-label class="emailLabel">Email: </ion-label>
+							  <div class="emailLabelWrapper">
+								  <ion-label class="emailFieldValue">
+									  {{selectedSuggestion['email']}}
+								  </ion-label>
+							  </div>
+						  </ion-card-subtitle>
+						  <ion-card-subtitle style="margin-left:10px;margin-top: 5px;"*ngIf="selectedSuggestion['hours'] != ''">
+							  <fa-icon [icon]="faClock"></fa-icon><ion-label style="margin-left:10px;">{{selectedSuggestion['hours']}}</ion-label>
+						  </ion-card-subtitle>
+					  </ion-card-header>
+				  </div>
+			  </ion-row>
+			  <ion-row class = "navigationButtonRow">
+				  <ion-button (click) = "checkGPSPermission()" class = "navigateButton"><ion-icon name="navigate"></ion-icon>Πλοηγηση</ion-button>
+			  </ion-row>
+			  
+			  <ion-row class = "descriptionRow">
+				  <ion-card-header class = "roadTripDescriptionCard articleCardTitle">
+					  <ion-card-title class = "titleLabel" ><h2 class = "roadtripDetails">Δυο Λόγια για εμάς</h2></ion-card-title>
+				  </ion-card-header>	
+				  <article class = "article"> 
+					  <p *ngIf = "!selectedSuggestion['showInitialSubContent']" style="margin-top: 0;white-space:pre-wrap;"> {{selectedSuggestion['mainContent']}}
+						  <a *ngIf = "selectedSuggestion['description'].split(' ').length > 50 && !selectedSuggestion['showInitialSubContent']" (click) = "showMoreInformation()">Περισσότερα...</a>
+					  </p>
+					  <p *ngIf = "selectedSuggestion['showInitialSubContent']" style="margin-top: 0;white-space:pre-wrap;" [innerHTML]=""> {{selectedSuggestion['description']}}
+						  <a *ngIf = "selectedSuggestion['description'].split(' ').length > 50 && selectedSuggestion['showInitialSubContent']" (click) = "showMoreInformation()">Λιγότερα......</a>
+					  </p>
+				  </article>
+			  </ion-row>
+		  </ion-grid>
+		  <h5 style="font-weight: bold;color:#57595A;width: 100%;text-align: center;" *ngIf="selectedSuggestion['catalogImages'].length > 0">MENU Καταστήματος</h5>
+		  <div class="headerContainer" *ngIf="selectedSuggestion['catalogImages'].length > 0">
+			  <div [ngStyle]= "{'width': phoneWidth + 'px', height: '23vh', overflow: 'hidden', 'margin-bottom': '15px'}" class="coverPhotoBusinessProfileContainer" >
+				  <ion-slides class = "slider" [options]="slideOptsTwo" #slideWithNav2 (ionSlideDidChange)="SlideDidChange($event)">
+					  <ion-slide class = "slide" *ngFor="let item of selectedSuggestion['catalogImages']">
+						  <div class = "imageContainerBusinessProfileCoverPhotos" [ngStyle]= "{'width': phoneWidth + 'px', height: '220px'}" >
+							  <img [defaultImage]="defaultImage" [lazyLoad]="item.path" [ngStyle]= "{'max-width': phoneWidth + 'px','object-fit': 'unset'}" (click) = "presentModal(2)"/>
+							  <button type="submit" ion-button color="light" class="swiper-button-prev swiper-button-prev-businessProfileCoverImages swiper-button-black" (click)="prevSlide(2)"><ion-icon class = "arrowIcon" name="arrow-back"></ion-icon></button>
+							  <button type="submit" ion-button color="light" class="swiper-button-next swiper-button-next-businessProfileCoverImages swiper-button-black" (click)="nextSlide(2)"><ion-icon class = "arrowIcon" name="arrow-forward"></ion-icon></button>
+						  </div>
+					  </ion-slide>
+				  </ion-slides>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+</ion-content>

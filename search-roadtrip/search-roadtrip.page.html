@@ -1,0 +1,151 @@
+<ion-header class = "headerContainer">
+	<ion-toolbar class="toolbar">
+		<h6 class = "headerTitle">"Ο πραγματικός πλούτος κρύβεται στα ταξίδια"</h6>
+		<!--<ion-buttons slot="end">
+			<ion-menu-button class="menuButton"></ion-menu-button>
+		</ion-buttons>-->
+	</ion-toolbar>
+</ion-header>
+<ion-content class = "content">
+	<ion-grid *ngIf="showTownTripAndRoadtrip" style="height: 94vh !important">
+		<div [ngStyle]= "{'width': phoneWidth + 'px', height: '94vh !important', overflow: 'hidden', display: 'inline-flex'}" class="coverPhotoContainer coverPhotoContainerDemo" >
+			<ion-img src = '../assets/images/14.png' [ngStyle]= "{'max-width': phoneWidth + 'px','object-fit': 'unset', 'width': '100%'}" (click) ="showSearchMode()"></ion-img>
+		</div>
+
+	</ion-grid>
+
+  	<ion-grid *ngIf="!showTownTripAndRoadtrip">
+		<div class = "container">
+			<!--<div [ngStyle]= "{'width': phoneWidth + 'px', height: '23vh', overflow: 'hidden', display: 'grid'}" class="coverPhotoContainer" >
+				<ion-img src = '../assets/images/searchFilters.jpg' [ngStyle]= "{'max-width': phoneWidth + 'px','object-fit': 'unset'}"></ion-img>
+			</div>-->
+			<div class="containerWithoutCoverPhoto" style="height:65vh;overflow:auto">
+				<ion-row class="initialCity">
+					<div class="initialCityDiv">
+						<fa-icon [icon]="faCity" class = "filtersFontAwesomeIcon"  style="margin-top: 10px;" [ngClass]="{'showBaseIDAlert': showBaseAlert}"></fa-icon>
+						<ion-select placeholder ='Στάση Εκκίνησης' [(ngModel)]="baseID" [ngClass]="{'showBaseIDAlert': showBaseAlert}" style = "font-size: 14px; --placeholder-opacity: 1;font-weight: bold;color:#57595A;padding-left: 10px;" (ionChange)="changeBaseID()">
+							<ion-select-option value="{{ item.ID }}"  *ngFor = "let item of bases"> {{ item.description }}</ion-select-option>
+						</ion-select>
+					</div>
+				</ion-row>
+				<ion-row class="initialCity" *ngIf="showBaseAlert">
+					<div class="initialCityDiv">
+						<ion-label class="showBaseIDAlertLabel">Επιλέξτε Στάση Εκκίνησης</ion-label>
+					</div>
+				</ion-row>
+				<!--<div class = "rentDiv">
+					<ion-row class="initialCity">
+					<ion-text>{{ 'YOU-DONT-HAVE-A-VEHICLE' | translate }}</ion-text>
+					</ion-row>
+					<ion-row class="initialCity">
+					<ion-text>Δεν υπάρχει πρόβλημα!</ion-text>
+					</ion-row>
+					<ion-row class="initialCity">
+					<ion-text>ΕΝΟΙΚΙΑΣΗ</ion-text>
+					</ion-row>
+				</div>
+				<ion-row class="initialCity">
+					<div class="searchDiv">
+					<ion-button color="primary" class = "ionButton"><fa-icon [icon]="faCar" class = "fontAwesomeIcon"></fa-icon>Car</ion-button>
+					<ion-button color="primary" class = "ionButton"><fa-icon [icon]="faMotorcycle" class = "fontAwesomeIcon"></fa-icon>Bike</ion-button>
+					<ion-button color="primary" class = "ionButton"><fa-icon [icon]="faShuttleVan" class = "fontAwesomeIcon"></fa-icon>Van</ion-button>
+					</div>
+				</ion-row>
+				<div class = "rentDiv">
+					<ion-row class="initialCity">
+					<ion-text>Κουράστηκες να οδηγάς</ion-text>
+					</ion-row>
+				</div>
+				<ion-row class="initialCity">
+					<div class="searchDiv">
+					<ion-button color="primary" class = "ionButton"><fa-icon [icon]="faHotel" class = "fontAwesomeIcon"></fa-icon>Διαμονη</ion-button>
+					</div>
+				</ion-row>-->
+				<ion-row class="rangeRows">
+					<ion-col size = "6">
+						<fa-icon [icon]="faRoute" class = "filtersFontAwesomeIcon"></fa-icon><ion-text class = "searchFilters">Χρόνος Διαδρομής:</ion-text>
+						<br>
+						<ion-text class = "searchFilters withBackLabel">(σε λεπτά)</ion-text>
+					</ion-col>
+					<ion-col size = "2">
+						<ion-input [(ngModel)]="distance" type = "number" min  = "1" max = "120"></ion-input>
+					</ion-col>
+				</ion-row>
+				<ion-row class="initialCity">
+					<div class = "rangeDiv">
+						<ion-range min="1" max="120" color="secondary" [(ngModel)]="distance">
+						<ion-label slot="start">1</ion-label>
+						<ion-label slot="end">120</ion-label>
+						</ion-range>
+					</div>
+				</ion-row>
+				<!--<ion-row class="initialCity">
+					<div class = "distanceLabel">
+					<ion-text>Ημέρες ROADTRIP: <label *ngIf = "days > 1">{{ days }}</label></ion-text>
+					</div>
+				</ion-row>
+				<ion-row class="initialCity">
+					<div class = "rangeDiv">
+					<ion-range min="1" max="10" color="secondary" [(ngModel)]="days">
+						<ion-label slot="start">1</ion-label>
+						<ion-label slot="end">10</ion-label>
+					</ion-range>
+					</div>
+				</ion-row>-->
+				<!--<ion-row class="rangeRows">
+					<ion-col size = "6">
+						<fa-icon [icon]="faEuroSign" class = "filtersFontAwesomeIcon"></fa-icon><ion-text class = "searchFilters">Κόστος Διαδρομής:</ion-text>
+						<br>
+						<ion-text class = "searchFilters withBackLabel">(μετ' επιστροφής)</ion-text>
+					</ion-col>
+					<ion-col size = "2">
+						<ion-input [(ngModel)]="cost" type = "number" min  = "1" max = "600"></ion-input>
+					</ion-col>
+				</ion-row>  -->
+				<!--<ion-row class="initialCity">
+					<div class = "rangeDiv">
+					<ion-range min="1" max="600" color="secondary" [(ngModel)]="cost">
+						<ion-label slot="start">1</ion-label>
+						<ion-label slot="end">600</ion-label>
+					</ion-range>
+					</div>
+				</ion-row> -->
+				<ion-row class="initialCity">
+					<ion-col size = "6">
+						<fa-icon [icon]="faCarAlt" class = "fontAwesomeIcon wheelChairIcon"></fa-icon>
+						<ion-text class = "searchFilters">Mε αμάξι</ion-text>
+					</ion-col>
+					<ion-col size = "2">
+						<ion-checkbox color="secondary" [(ngModel)] = "withCar"></ion-checkbox>
+					</ion-col>
+				</ion-row> 
+				<ion-row class="initialCity">
+					<ion-col size = "6">
+						<fa-icon [icon]="faShoePrints" class = "fontAwesomeIcon wheelChairIcon" style="margin-left: -6px;"></fa-icon>
+						<ion-text class = "searchFilters">Με πόδια</ion-text>
+					</ion-col>
+					<ion-col size = "2">
+						<ion-checkbox color="secondary" [(ngModel)] = "withFeet"></ion-checkbox>
+					</ion-col>
+				</ion-row> 
+				<ion-row class="initialCity">
+					<ion-col size = "6">
+						<fa-icon [icon]="faWheelchair" class = "fontAwesomeIcon wheelChairIcon"></fa-icon>
+						<ion-text class = "searchFilters">AMEA Care</ion-text>
+					</ion-col>
+					<ion-col size = "2">
+						<ion-checkbox color="secondary" [(ngModel)] = "ameaCareChecked"></ion-checkbox>
+					</ion-col>
+				</ion-row> 
+				<!--<ion-row class="initialTextRow">				
+					<p class="initialText">*Το κόστος και τα χιλιόμετρα της κάθε διαδρομής είναι υπολογισμένα κατά προσέγγιση.</p>
+				</ion-row>  -->
+				<ion-row class="initialCity">
+					<div class="searchDiv">
+						<ion-button color = "primary" (click) = "searchRoadTrips()" class = "ionButton" [disabled] = 'cost <= 1 || distance <= 1'><ion-icon name="search" class = "fontAwesomeIcon"></ion-icon>Αναζητηση</ion-button>
+					</div>
+				</ion-row>
+			</div>
+		</div>
+  	</ion-grid>
+</ion-content>

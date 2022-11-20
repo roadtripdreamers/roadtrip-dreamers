@@ -1,0 +1,59 @@
+<ion-content class = "content">
+	<ion-grid>
+		<ion-row class="searchBarWrapper">
+			<ion-searchbar type="text" [(ngModel)]= "liveSearchValue" debounce="500" style="padding:0" placeholder="Αναζήτηση Διαδρομής" (ionChange)="getLiveSearchItems($event)"></ion-searchbar>
+			<ion-list class="liveSearchList" *ngIf="liveSearchAvailable">
+				<ion-item class="liveSearchItems" *ngFor="let item of liveSearchItems" (click)="openRoadTripView(item.routeID)">{{ item.description }}</ion-item>
+			</ion-list>
+		</ion-row>
+		<div class="sortingFiltersContainer">
+			<ion-row class="sortingFilterRow">
+				<ion-col size = "6" class="sortingFilterColumn">
+					<ion-label class="sortingLabel">Ταξινόμηση Ανά:</ion-label>
+					<ion-select placeholder ='Επιλογή Κριτηρίων' [(ngModel)]="sortingObject.ID"  [(value)]="sortingObject.ID" style = "--placeholder-opacity: 1;font-weight: bold;color:#000;" (ionChange) = "sortRoadtrips()">
+						<ion-select-option   [(value)]="item.ID" *ngFor = "let item of sortingFilters"> {{ item.description }}</ion-select-option>
+					</ion-select>
+				</ion-col>
+				<!--<ion-col size = "2">
+					<ion-button class="sortingButton" (click) = "sortRoadtrips()"><fa-icon [icon]="faSort" class="subtitlesIcon"></fa-icon></ion-button>
+				</ion-col>-->
+			</ion-row>
+			
+		</div>	
+		<div class = "container">
+			<ion-row class="titleRow">
+				<ion-col size-sm="12" size-md = "6" size-lg="6" class = "titleRow" *ngFor = "let item of roadTripItems" >
+					<ion-row class="cardTitle">
+						<h5 class="description">{{ item.description }}</h5>
+					</ion-row>
+					<ion-row>
+						<ion-card class = "cardItem">
+							<ion-card-header class = "cardHeader">
+								<div class = "imageItemContainer" [ngStyle]= "{'width': '350px', height: '220px', overflow: 'hidden', display: 'flex'}">
+									<!--<ion-img [src] = 'item.mainImagePath' [ngStyle]= "{'max-width': '350px'}" (click) = "openRoadTripView(item.ID)" style = "min-width: 320px;" class="imageItem"></ion-img>-->
+									<img [defaultImage]="defaultImage" [offset]="500" [lazyLoad]="item.mainImagePath" [ngStyle]= "{'max-width': '350px', width: '350px'}" (click) = "openRoadTripView(item.ID)" class="imageItem"/>
+								</div>
+								<ion-card-subtitle class="cardSubtitle"><fa-icon [icon]="faRoad" class="subtitlesIcon"></fa-icon><ion-label style = "margin-left: 10px;">Χιλιόμετρα: {{ item.distance / 1000}} (μετ' επιστροφής)</ion-label></ion-card-subtitle>
+								<ion-card-subtitle class="cardSubtitle"><fa-icon [icon]="faClock" class="subtitlesIcon"></fa-icon><ion-label style = "margin-left: 10px;">Διάρκεια: {{ item.convertedDuration }}</ion-label></ion-card-subtitle>
+								<!--<ion-card-subtitle class="cardSubtitle"><fa-icon [icon]="faEuroSign" style="font-size: 16px"></fa-icon><ion-label style = "margin-left: 15px;">Kόστος: {{ item.cost / 100}} <fa-icon [icon]="faEuroSign" style="font-size: 13px"></fa-icon> (Διόδια - Βενζίνη)</ion-label></ion-card-subtitle>-->
+								<!--<ion-card-subtitle class="cardSubtitle"><fa-icon [icon]="faRoad" class="subtitlesIcon"></fa-icon><ion-label style = "margin-left: 10px;">Δυσκολία Διαδρομής: {{ setRoadTripDifficulty(item.difficulty) }}</ion-label></ion-card-subtitle>-->
+								<ion-card-subtitle class="cardSubtitle" *ngIf = "item.ameaCare"><fa-icon [icon]="faWheelchair" class = "subtitlesIcon"></fa-icon><ion-label style = "margin-left: 10px;">AMEA Care</ion-label></ion-card-subtitle>
+								<ion-card-subtitle class="cardSubtitle" *ngIf = "!item.ameaCare" style="height:17px;"></ion-card-subtitle>
+								<!--<ion-card-subtitle class="cardSubtitle">
+									<ion-rating [rate] = 'item.rate' readonly="true" size='default'></ion-rating><ion-label class="reviewLabel">({{ item.reviews }})</ion-label>
+								</ion-card-subtitle>-->
+								<div class = "destinationButtonContainer">
+									<ion-button class = "destinationButton" (click) = "openRoadTripView(item.ID)"><ion-icon name="navigate"></ion-icon>Διαδρομη</ion-button>
+								</div>
+							</ion-card-header>
+						</ion-card>
+					</ion-row>
+				</ion-col>
+			</ion-row>
+			<ion-infinite-scroll #infiniteScroll (ionInfinite)="doInfinite($event)">
+				<ion-infinite-scroll-content loadingSpinner="bubbles">
+				</ion-infinite-scroll-content>
+			</ion-infinite-scroll>
+		</div>
+	</ion-grid>
+</ion-content>
